@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import CloseIcon from '@material-ui/icons/Close'
 import MenuIcon from '@material-ui/icons/Menu'
 import { selectCars } from '../features/car/carSlice'
 import { useSelector } from 'react-redux'
 
-function Header() {
-  const [burgerStatus, setBurgerStatus] = useState(false);
+function Header({ reference, click }) {
+  const [burgerStatus, setBurgerStatus] = useState(false)
   const cars = useSelector(selectCars)
 
   return (
@@ -16,21 +16,23 @@ function Header() {
       </a>
       <Menu>
         {cars && cars.map((car, index) => (
-          <a key={index} href='#'>{car}</a>
+          <a key={index} href={`#${car.slug}`}>{car.name}</a>
         ))}
       </Menu>
       <RightMenu>
-        <a href='#'>Shop</a>
-        <a href='#'>Tesla Account</a>
-        <CustomMenu onClick={()=>setBurgerStatus(true)}/>
+        <LinksGroup>
+          <a href='#'>Shop</a>
+          <a href='#'>Tesla Account</a>
+        </LinksGroup>
+        <BurgerMenu onClick={()=>setBurgerStatus(true)}/>
       </RightMenu>
       <BurgerNav show={burgerStatus}>
         <CloseWrapper>
           <CustomClose onClick={()=>setBurgerStatus(false)}/>     
         </CloseWrapper>
         {cars && cars.map((car, index) => (
-          <li key={index}>
-            <a href='#'>{car}</a>
+          <li key={index} ref={reference}>
+            <a href={`#${car.slug}`} onClick={click}>{car.name}</a>
           </li>
         ))}
         <li><a href="#">Existing Inventory</a></li>
@@ -87,7 +89,15 @@ const RightMenu = styled.div`
   }
 `
 
-const CustomMenu = styled(MenuIcon)`
+const LinksGroup = styled.div`
+  display: flex;
+
+  @media(max-width: 768px) {
+    display: none;
+  }
+`
+
+const BurgerMenu = styled(MenuIcon)`
   cursor: pointer;
 `
 

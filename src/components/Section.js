@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import Fade from 'react-reveal';
 
-function Section({ title, description, leftBtnText, rightBtnText, backgroundImg }) {
+function Section({ id, title, description, leftBtnText, rightBtnText, backgroundImg }) {
   return (
-    <Wrap bgImage={backgroundImg}>
+    <Wrap id={id} bgImage={backgroundImg}>
       <Fade bottom>
         <ItemText>
           <h1>{ title }</h1>
@@ -37,10 +37,12 @@ export default Section;
 const Wrap = styled.div`
   width: 100vw;
   height: 100vh;
+
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
   background-image: ${props => `url("/images/${props.bgImage}")`};
+  
   display: flex;
   flex-direction: column;
   justify-content: space-between;
